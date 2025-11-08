@@ -10,7 +10,6 @@ Before usage make sure you have all required libaries installed (requirements.tx
 
 ```
 pip install -r requirements.txt
-
 ```
 
 <br>Example usage:
