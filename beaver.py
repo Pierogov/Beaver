@@ -87,6 +87,8 @@ def main():
     if not os.path.exists(input_file):
         print(f"Error: File '{input_file}' not found.")
         return
+    else:
+        print(f"Parsing file: '{input_file}', please wait for the IP regex to finish.")
     
     # Find all IPs
     with open(input_file, newline='', encoding='utf-8') as csvfile:
