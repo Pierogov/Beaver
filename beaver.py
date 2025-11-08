@@ -60,11 +60,11 @@ def main():
     if(show_banner != True):
     
         print("__________                                 ")
-        print("\______   \ ____ _____ ___  __ ___________ ")
-        print("|    |  _// __ \\\\__  \\\\  \/ // __ \_  __ \ ")
-        print("|    |   \  ___/ / __ \\\\   /\  ___/|  | \/ ")
-        print("|______  /\___  >____  /\_/  \___  >__|    ")
-        print("        \/     \/     \/          \/       ")
+        print("\\______   \\ ____ _____ ___  __ ___________ ")
+        print("|    |  _// __ \\\\__  \\\\  \\/ // __ \\_  __ \\ ")
+        print("|    |   \\  ___/ / __ \\\\   /\\  ___/|  | \\/ ")
+        print("|______  /\\___  >____  /\\_/  \\___  >__|    ")
+        print("        \\/     \\/     \\/          \\/       ")
         print("\n=================================================\nSimple tool created to simplify log analysis.")
         print("=================================================\nMade by bored SOC operator...\n=================================================\n")
         time.sleep(1)
@@ -108,7 +108,7 @@ def main():
     with open(ips_found_file, "r", encoding="utf-8") as f:
         ips = [line.strip() for line in f if line.strip()]
 
-    print(f"Checking {len(ips)} IP addresses...")
+    print(f"Checking {len(ips)} IP addresses:")
 
     for idx, ip in enumerate(ips, start=1):
         if is_private_ip(ip):
