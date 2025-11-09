@@ -1,7 +1,7 @@
 # Beaver
 Simple tool created to make log analysis easier. Its principle task is to collect all IP addresses appearing in network traffic logs and then, using the ipinfo.io API, collect information about the ISP and country for further analysis.
 <br><br>
-![Beaver image](./img/beaver_banner.jpg)
+![Beaver image](img/banner.jpg)
 ## Usage
 
 If anything doesn't work, please make sure you have all required libaries installed (requirements.txt) - you can use command below:
