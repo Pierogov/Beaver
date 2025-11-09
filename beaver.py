@@ -37,6 +37,12 @@ def main():
     parser = argparse.ArgumentParser(description="Simple tool created to simplify log analysis.")
     parser.add_argument("input_file", help="Path to the input log file.")
     parser.add_argument(
+        "-s","--success",
+        default="",
+        metavar="<str>",
+        help="If set, the program will only parse records with successfull login, searched by provided string."
+    )
+    parser.add_argument(
         "-d","--delay",
         type=float,
         default=0.5,
@@ -46,7 +52,7 @@ def main():
     parser.add_argument(
         "-f","--fast", 
         action="store_true",
-        help="Skip entry banner (and it's delay)"
+        help="Skip unnecesary messages and banners made to look better"
     )
     parser.add_argument(
         "-p","--private", 
@@ -89,14 +95,35 @@ def main():
         return
     else:
         print(f"Parsing file: '{input_file}', please wait for the IP regex to finish.")
+    if(args.success!=""):
+        success_regex = re.compile(args.success)
     
     # Find all IPs
+    if(show_banner != True):
+        max = sum(1 for _ in open(input_file))
     with open(input_file, newline='', encoding='utf-8') as csvfile:
         reader = csv.reader(csvfile)
+        if(show_banner != True):
+            i = 1
         for row in reader:
-            for cell in row:
-                ips = ip_regex.findall(cell)
-                found_ips.update(ips)
+            if(args.success==""):
+                for cell in row:
+                    ips = ip_regex.findall(cell)
+                    found_ips.update(ips)
+
+            else:
+                successful = False
+                for cell in row:
+                    success = success_regex.findall(cell)
+                    if(len(success)>=1):
+                        successful = True
+                if(successful==True):
+                    for cell in row:
+                        ips = ip_regex.findall(cell)
+                        found_ips.update(ips)
+            if(show_banner != True):
+                print(f"[{i}/{max}] -> Searching for IPs in this row")
+                i+=1
 
     # Write unique IPS to file
     with open(ips_found_file, "w+", encoding='utf-8') as f:
@@ -110,7 +137,7 @@ def main():
     with open(ips_found_file, "r", encoding="utf-8") as f:
         ips = [line.strip() for line in f if line.strip()]
 
-    print(f"Checking {len(ips)} IP addresses:")
+    print(f"\nFound {len(ips)} IP addresses, now checking ISP:")
 
     for idx, ip in enumerate(ips, start=1):
         if is_private_ip(ip):
@@ -129,7 +156,7 @@ def main():
     # Save results to final file
     with open(isp_file, "w+", newline='', encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["ip", "isp", "country"])
+        writer.writerow(["IP", "ISP", "Country"])
         writer.writerows(results)
 
     print(f"\nResults saved in '{isp_file}'")
